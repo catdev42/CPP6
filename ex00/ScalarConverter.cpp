@@ -30,12 +30,6 @@ ScalarConverter::~ScalarConverter()
 /********************************************/
 /****** STREAM ******/
 
-std::ostream &operator<<(std::ostream &o, const ScalarConverter &infile)
-{
-    o << "";
-    return o;
-}
-
 /********************************************/
 /********************************************/
 /****** PRIVATE ******/

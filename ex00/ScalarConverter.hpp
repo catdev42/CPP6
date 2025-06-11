@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cctype>
 
-
 #ifndef COLOR
 #define COLOR
 #define GREY "\033[0;30m"
@@ -13,16 +12,11 @@
 
 class ScalarConverter
 {
-private:
-    static char _char;
-    static int _int;
-    static float _float;
-    static double _double;
 
-    ScalarConverter();
-    ScalarConverter(ScalarConverter const &src);
-    ScalarConverter &operator=(ScalarConverter const &rhs);
-    ~ScalarConverter();
+public:
+    static void convert(std::string const &str);
+
+private:
     enum type
     {
         CHAR = 0,
@@ -33,10 +27,17 @@ private:
         INF_POS = 5,
         NANF = 6
     };
+
+    static char _char;
+    static int _int;
+    static float _float;
+    static double _double;
     static type getType(std::string const &str);
 
-public:
-    static void convert(std::string const &str);
+    ScalarConverter();
+    ScalarConverter(ScalarConverter const &src);
+    ScalarConverter &operator=(ScalarConverter const &rhs);
+    ~ScalarConverter();
 };
 
 #endif
