@@ -2,6 +2,7 @@
 #include <iostream>
 #include <climits>
 #include <cfloat>
+#include <cstdlib>
 
 ScalarConverter::type ScalarConverter::_typeOfStr;
 char ScalarConverter::_char;
@@ -48,23 +49,23 @@ void ScalarConverter::convert(std::string const &str)
         fromDouble();
         break;
     case INT:
-        _int = std::stoi(str);
+        _int = std::atoi(str.c_str());
         _double = static_cast<double>(_int);
         fromDouble();
         break;
     case FLOAT:
-        _float = std::stof(str);
-        _double = static_cast<double>(_int);
+        _float = static_cast<float>(std::atof(str.c_str()));
+        _double = static_cast<double>(_float);
         fromDouble();
         break;
     case DOUBLE:
-        _double = std::stod(str);
+        _double = std::atof(str.c_str());
         fromDouble();
         break;
     case INF_POS:
     case INF_NEG:
     case NANF:
-
+        printSpecial();
         break;
     default:
         std::cout << "error: Unknown Type";
