@@ -69,7 +69,6 @@ void ScalarConverter::convert(std::string const &str)
 /********************************************/
 /****** PRIVATE MEMBER FUNCTIONS ******/
 
-
 void ScalarConverter::fromDouble()
 {
     if (_double < 128 && _double >= 0)
@@ -153,7 +152,6 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
         return INT;
 }
 
-
 void ScalarConverter::printSpecial()
 {
     std::cout
@@ -172,61 +170,3 @@ void ScalarConverter::printSpecial()
                   << "double: " << "nan"
                   << std::endl;
 }
-
-
-/********************************************/
-/********************************************/
-/****** STREAM ******/
-
-/********************************************/
-/********************************************/
-/****** PRIVATE ******/
-
-// ./convert 0
-// char: Non displayable
-// int: 0
-// float: 0.0f
-// double: 0.0
-
-/*
-void ScalarConverter::fromChar()
-{
-    _double = static_cast<double>(_int);
-    fromDouble();
-    // _int = static_cast<int>(_char);
-    // printChar(_int);
-    // _float = static_cast<float>(_int);
-    // _double = static_cast<double>(_int);
-    // std::cout
-    //     << "\nint: "
-    //     << static_cast<int>(_int)
-    //     << "\nfloat: "
-    //     << static_cast<float>(_float)
-    //     << "f\ndouble: "
-    //     << static_cast<double>(_double)
-    //     << std::endl;
-}
-
-void ScalarConverter::fromInt()
-{
-    _double = static_cast<double>(_int);
-    fromDouble();
-    // _float = static_cast<float>(_int);
-    // _double = static_cast<double>(_int);
-    // printChar(_int);
-    // std::cout
-    //     << "\nint: "
-    //     << _int
-    //     << "\nfloat: "
-    //     << _float
-    //     << "f\ndouble: "
-    //     << _double
-    //     << std::endl;
-}
-
-void ScalarConverter::fromFloat()
-{
-    _double = static_cast<double>(_float);
-    fromDouble();
-}
-*/
