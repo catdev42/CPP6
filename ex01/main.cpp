@@ -11,4 +11,5 @@ int main(void)
 	std::cout << "0x" << std::hex << intPtr << std::dec << std::endl;
 	Data *newPtr = Serializer::deserialize(intPtr);
 	std::cout << newPtr << std::endl;
+	delete (dataPtr);
 }
