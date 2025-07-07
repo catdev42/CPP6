@@ -3,6 +3,7 @@
 #include <climits>
 #include <cfloat>
 #include <cstdlib>
+#include <iomanip>
 
 ScalarConverter::type ScalarConverter::_typeOfStr;
 char ScalarConverter::_char;
@@ -49,15 +50,7 @@ void ScalarConverter::convert(std::string const &str)
         fromDouble();
         break;
     case INT:
-        _int = std::atoi(str.c_str());
-        _double = static_cast<double>(_int);
-        fromDouble();
-        break;
     case FLOAT:
-        _float = static_cast<float>(std::atof(str.c_str()));
-        _double = static_cast<double>(_float);
-        fromDouble();
-        break;
     case DOUBLE:
         _double = std::atof(str.c_str());
         fromDouble();
@@ -76,79 +69,6 @@ void ScalarConverter::convert(std::string const &str)
 /********************************************/
 /****** PRIVATE MEMBER FUNCTIONS ******/
 
-ScalarConverter::type ScalarConverter::getType(std::string const &str)
-{
-    int i = 0;
-    bool dot = 0;
-    bool chars = 0;
-
-    if (str.compare("+inff") == 0 || str.compare("+inf") == 0)
-        return INF_POS;
-    if (str.compare("-inff") == 0 || str.compare("-inf") == 0)
-        return INF_NEG;
-    if (str.compare("nan") == 0 || str.compare("nanf") == 0)
-        return NANF;
-
-    while (str[i])
-    {
-        if (str[i] >= '0' && str[i] <= '9')
-            ;
-        else if (str[i] == '.')
-            dot = 1;
-        else
-            chars = 1;
-    }
-
-    if (dot && str[str.length() - 1] == 'f')
-        return FLOAT;
-    else if (dot && str[str.length() - 1] != 'f')
-        return DOUBLE;
-    else if (chars)
-        return CHAR;
-    else
-        return INT;
-}
-
-void ScalarConverter::printChar(int c)
-{
-    std::cout
-        << "char: ";
-    if (std::isprint(c))
-    {
-        _char = static_cast<char>(c);
-        std::cout << c;
-    }
-    else
-    {
-        if (c > 127 || c < 0)
-            std::cout
-                << "char: impossible";
-        else
-            std::cout
-                << "char: unprintable";
-    }
-}
-
-void ScalarConverter::printSpecial()
-{
-    std::cout
-        << "char: impossible\n"
-        << "int: impossible\n"
-        << std::endl;
-
-    if (_typeOfStr == INF_POS)
-        std::cout << "float: " << "+inff"
-                  << "double: " << "+inf"
-                  << std::endl;
-    else if (_typeOfStr == INF_NEG)
-        std::cout << "\nfloat: " << "-inff"
-                  << "\ndouble: " << "-inf"
-                  << std::endl;
-    else if (_typeOfStr == NANF)
-        std::cout << "\nfloat: " << "nanf"
-                  << "\ndouble: " << "nan"
-                  << std::endl;
-}
 
 void ScalarConverter::fromDouble()
 {
@@ -162,13 +82,97 @@ void ScalarConverter::fromDouble()
     else
         std::cout << "\nint: impossible";
 
+    std::cout << std::fixed;
+    
+    if (_double == static_cast<int>(_double))
+        std::cout << std::setprecision(1);
+    else         
+        std::cout << std::setprecision(2);
+
     if (_double <= FLT_MAX && _double >= -FLT_MAX)
         std::cout << "\nfloat: " << static_cast<float>(_double) << "f";
     else
-        std::cout << "\nfloat: impossible";
+        std::cout 
+        << "\nfloat: impossible";
         
-    std::cout << "\ndouble: " << _double;
+    std::cout << "\ndouble: " << _double << std::endl;
 }
+
+void ScalarConverter::printChar(int c)
+{
+    std::cout
+        << "char: ";
+    if (std::isprint(c))
+    {
+        _char = static_cast<char>(c);
+        std::cout << _char;
+    }
+    else
+    {
+        if (c > 127 || c < 0)
+            std::cout
+                << "impossible";
+        else
+            std::cout
+                << "unprintable";
+    }
+}
+
+ScalarConverter::type ScalarConverter::getType(std::string const &str)
+{
+    int i = 0;
+    bool dot = 0;
+    bool chars = 0;
+    bool nums = 0;
+
+    if (str.compare("+inff") == 0 || str.compare("+inf") == 0)
+        return INF_POS;
+    if (str.compare("-inff") == 0 || str.compare("-inf") == 0)
+        return INF_NEG;
+    if (str.compare("nan") == 0 || str.compare("nanf") == 0)
+        return NANF;
+
+    while (str[i])
+    {
+        if (str[i] >= '0' && str[i] <= '9')
+            nums = 1;
+        else if (str[i] == '.')
+            dot = 1;
+        else
+            chars = 1;
+        i++;
+    }
+
+    if (dot && str[str.length() - 1] == 'f')
+        return FLOAT;
+    else if (dot && str[str.length() - 1] != 'f')
+        return DOUBLE;
+    else if (chars && !nums)
+        return CHAR;
+    else
+        return INT;
+}
+
+
+void ScalarConverter::printSpecial()
+{
+    std::cout
+        << "char: impossible\n"
+        << "int: impossible\n";
+    if (_typeOfStr == INF_POS)
+        std::cout << "float: " << "+inff"<< "\n"
+                  << "double: " << "+inf"
+                  << std::endl;
+    else if (_typeOfStr == INF_NEG)
+        std::cout << "float: " << "-inff"<< "\n"
+                  << "double: " << "-inf"
+                  << std::endl;
+    else if (_typeOfStr == NANF)
+        std::cout << "float: " << "nanf"<< "\n"
+                  << "double: " << "nan"
+                  << std::endl;
+}
+
 
 /********************************************/
 /********************************************/
