@@ -14,7 +14,7 @@ class ScalarConverter
 {
 
 public:
-    static void convert(std::string const &str);
+    static void printConvert(std::string const &str);
 
 private:
     enum type
@@ -28,11 +28,24 @@ private:
         NANF = 6
     };
 
+    static type _typeOfStr;
     static char _char;
     static int _int;
     static float _float;
     static double _double;
     static type getType(std::string const &str);
+
+    void printFrom();
+
+    static void fromInt();
+    static void fromChar();
+    static void fromFloat();
+    static void fromDouble();
+
+    static void printChar(int c);
+
+    // static void unprintable();
+    // static void unprintable(std::ostream &o)
 
     ScalarConverter();
     ScalarConverter(ScalarConverter const &src);
