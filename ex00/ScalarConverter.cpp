@@ -99,9 +99,9 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
             chars = 1;
     }
 
-    if (dot && str.back() == 'f')
+    if (dot && str[str.length() - 1] == 'f')
         return FLOAT;
-    else if (dot && str.back() != 'f')
+    else if (dot && str[str.length() - 1] != 'f')
         return DOUBLE;
     else if (chars)
         return CHAR;
@@ -166,7 +166,7 @@ void ScalarConverter::fromDouble()
         std::cout << "\nfloat: " << static_cast<float>(_double) << "f";
     else
         std::cout << "\nfloat: impossible";
-
+        
     std::cout << "\ndouble: " << _double;
 }
 
