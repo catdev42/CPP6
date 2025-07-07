@@ -1,6 +1,12 @@
 #include "ScalarConverter.hpp"
 #include <iostream>
 
+ScalarConverter::type ScalarConverter::_typeOfStr;
+char ScalarConverter::_char;
+int ScalarConverter::_int;
+float ScalarConverter::_float;
+double ScalarConverter::_double;
+
 ScalarConverter::ScalarConverter()
 {
     std::cout << GREY << "ScalarConverter default constructor" << RESET << std::endl;
@@ -8,11 +14,13 @@ ScalarConverter::ScalarConverter()
 
 ScalarConverter::ScalarConverter(ScalarConverter const &src)
 {
+    (void)&src;
     std::cout << GREY << "ScalarConverter copy constructor" << RESET << std::endl;
 }
 
-ScalarConverter &ScalarConverter::operator=(ScalarConverter const &rhs)
+ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
 {
+    (void)&other;
     std::cout << GREY << "ScalarConverter copy assignment operator" << RESET << std::endl;
     return *this;
 }
@@ -25,7 +33,8 @@ ScalarConverter::~ScalarConverter()
 /********************************************/
 /********************************************/
 /****** MEMBER FUNCTIONS ******/
-void ScalarConverter::printConvert(std::string const &str)
+
+void ScalarConverter::convert(std::string const &str)
 {
     _typeOfStr = getType(str);
 
@@ -51,138 +60,14 @@ void ScalarConverter::printConvert(std::string const &str)
         fromDouble();
         break;
     case INF_POS:
-        break;
     case INF_NEG:
-        break;
     case NANF:
+
         break;
     default:
-        std::cout << "Error: Unknown Type";
+        std::cout << "error: Unknown Type";
     }
 }
-
-void ScalarConverter::printChar(int c)
-{
-    std::cout
-        << "char: ";
-    if (std::isprint(c))
-    {
-        _char = static_cast<char>(c);
-        std::cout << c;
-    }
-    else
-    {
-        if (c > 127 || c < 0)
-            std::cout
-                << "char: impossible";
-        else
-            std::cout
-                << "char: unprintable";
-    }
-}
-// ./convert 0
-// char: Non displayable
-// int: 0
-// float: 0.0f
-// double: 0.0
-
-void ScalarConverter::fromChar()
-{
-    _double = static_cast<double>(_int);
-    fromDouble();
-
-    // _int = static_cast<int>(_char);
-    // printChar(_int);
-    // _float = static_cast<float>(_int);
-    // _double = static_cast<double>(_int);
-    // std::cout
-    //     << "\nint: "
-    //     << static_cast<int>(_int)
-    //     << "\nfloat: "
-    //     << static_cast<float>(_float)
-    //     << "f\ndouble: "
-    //     << static_cast<double>(_double)
-    //     << std::endl;
-}
-
-void ScalarConverter::fromInt()
-{
-    _double = static_cast<double>(_int);
-    fromDouble();
-
-    // _float = static_cast<float>(_int);
-    // _double = static_cast<double>(_int);
-    // printChar(_int);
-    // std::cout
-    //     << "\nint: "
-    //     << _int
-    //     << "\nfloat: "
-    //     << _float
-    //     << "f\ndouble: "
-    //     << _double
-    //     << std::endl;
-}
-
-// compicated
-void ScalarConverter::fromFloat()
-{
-    _double = static_cast<double>(_float);
-    fromDouble();
-}
-
-// complicated
-void ScalarConverter::fromDouble()
-{
-    if (_double < 128 && _double >= 0)
-        printChar(static_cast<int>(_double));
-    else
-        std::cout << "char: impossible";
-
-    if (_double < std::numeric_limits<int>::max() && _double > std::numeric_limits<int>::min())
-        std::cout << "\nint: " << static_cast<int>(_double);
-    else
-        std::cout << "\nint: impossible";
-
-    if (_double < std::numeric_limits<float>::max() && _double > std::numeric_limits<float>::min())
-        std::cout << static_cast<float>(_double) << "f";
-    else
-        std::cout << "\nfloat: impossible";
-
-    std::cout << "\ndouble: " << _double;
-}
-
-// std::numeric_limits<int>::min()
-
-// std::cout
-//     << "char: "
-//     << static_cast<char>(c)
-//     << "\nint: "
-//     << static_cast<int>(c)
-//     << "\nfloat: "
-//     << static_cast<float>(c)
-//     << "f\ndouble: "
-//     << static_cast<double>(c)
-//     << std::endl;
-
-// void ScalarConverter::printFloat(float f)
-// {
-//     std::cout << f;
-
-// }
-
-// void ScalarConverter::printDouble(double d)
-// {
-//     std::cout << d;
-// }
-
-// void ScalarConverter::unprintable()
-// {
-//     std::cout << "unprintable";
-// }
-// void ScalarConverter::unprintable(std::ostream &o)
-// {
-//     o << "char unprintable";
-// }
 
 /********************************************/
 /********************************************/
@@ -221,6 +106,67 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
         return INT;
 }
 
+void ScalarConverter::printChar(int c)
+{
+    std::cout
+        << "char: ";
+    if (std::isprint(c))
+    {
+        _char = static_cast<char>(c);
+        std::cout << c;
+    }
+    else
+    {
+        if (c > 127 || c < 0)
+            std::cout
+                << "char: impossible";
+        else
+            std::cout
+                << "char: unprintable";
+    }
+}
+
+void ScalarConverter::printSpecial()
+{
+    std::cout
+        << "char: impossible\n"
+        << "int: impossible\n"
+        << std::endl;
+
+    if (_typeOfStr == INF_POS)
+        std::cout << "float: " << "+inff"
+                  << "double: " << "+inf"
+                  << std::endl;
+    else if (_typeOfStr == INF_NEG)
+        std::cout << "\nfloat: " << "-inff"
+                  << "\ndouble: " << "-inf"
+                  << std::endl;
+    else if (_typeOfStr == NANF)
+        std::cout << "\nfloat: " << "nanf"
+                  << "\ndouble: " << "nan"
+                  << std::endl;
+}
+
+void ScalarConverter::fromDouble()
+{
+    if (_double < 128 && _double >= 0)
+        printChar(static_cast<int>(_double));
+    else
+        std::cout << "char: impossible";
+
+    if (_double < std::numeric_limits<int>::max() && _double > std::numeric_limits<int>::min())
+        std::cout << "\nint: " << static_cast<int>(_double);
+    else
+        std::cout << "\nint: impossible";
+
+    if (_double < std::numeric_limits<float>::max() && _double > std::numeric_limits<float>::min())
+        std::cout << static_cast<float>(_double) << "f";
+    else
+        std::cout << "\nfloat: impossible";
+
+    std::cout << "\ndouble: " << _double;
+}
+
 /********************************************/
 /********************************************/
 /****** STREAM ******/
@@ -228,3 +174,52 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
 /********************************************/
 /********************************************/
 /****** PRIVATE ******/
+
+// ./convert 0
+// char: Non displayable
+// int: 0
+// float: 0.0f
+// double: 0.0
+
+/*
+void ScalarConverter::fromChar()
+{
+    _double = static_cast<double>(_int);
+    fromDouble();
+    // _int = static_cast<int>(_char);
+    // printChar(_int);
+    // _float = static_cast<float>(_int);
+    // _double = static_cast<double>(_int);
+    // std::cout
+    //     << "\nint: "
+    //     << static_cast<int>(_int)
+    //     << "\nfloat: "
+    //     << static_cast<float>(_float)
+    //     << "f\ndouble: "
+    //     << static_cast<double>(_double)
+    //     << std::endl;
+}
+
+void ScalarConverter::fromInt()
+{
+    _double = static_cast<double>(_int);
+    fromDouble();
+    // _float = static_cast<float>(_int);
+    // _double = static_cast<double>(_int);
+    // printChar(_int);
+    // std::cout
+    //     << "\nint: "
+    //     << _int
+    //     << "\nfloat: "
+    //     << _float
+    //     << "f\ndouble: "
+    //     << _double
+    //     << std::endl;
+}
+
+void ScalarConverter::fromFloat()
+{
+    _double = static_cast<double>(_float);
+    fromDouble();
+}
+*/

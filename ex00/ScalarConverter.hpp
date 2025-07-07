@@ -14,7 +14,7 @@ class ScalarConverter
 {
 
 public:
-    static void printConvert(std::string const &str);
+    static void convert(std::string const &str);
 
 private:
     enum type
@@ -35,15 +35,14 @@ private:
     static double _double;
     static type getType(std::string const &str);
 
-    void printFrom();
-
-    static void fromInt();
-    static void fromChar();
-    static void fromFloat();
+    // void printFrom();
+    // static void fromInt();
+    // static void fromChar();
+    // static void fromFloat();
     static void fromDouble();
 
     static void printChar(int c);
-
+    static void printSpecial();
     // static void unprintable();
     // static void unprintable(std::ostream &o)
 
