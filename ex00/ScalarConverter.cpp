@@ -47,13 +47,13 @@ void ScalarConverter::convert(std::string const &str)
     case CHAR:
         _char = str[0];
         _double = static_cast<double>(_char);
-        fromDouble();
+        printFromDouble();
         break;
     case INT:
     case FLOAT:
     case DOUBLE:
         _double = std::atof(str.c_str());
-        fromDouble();
+        printFromDouble();
         break;
     case INF_POS:
     case INF_NEG:
@@ -69,7 +69,7 @@ void ScalarConverter::convert(std::string const &str)
 /********************************************/
 /****** PRIVATE MEMBER FUNCTIONS ******/
 
-void ScalarConverter::fromDouble()
+void ScalarConverter::printFromDouble()
 {
     if (_double < 128 && _double >= 0)
         printChar(static_cast<int>(_double));
@@ -82,18 +82,18 @@ void ScalarConverter::fromDouble()
         std::cout << "\nint: impossible";
 
     std::cout << std::fixed;
-    
+
     if (_double == static_cast<int>(_double))
         std::cout << std::setprecision(1);
-    else         
+    else
         std::cout << std::setprecision(2);
 
     if (_double <= FLT_MAX && _double >= -FLT_MAX)
         std::cout << "\nfloat: " << static_cast<float>(_double) << "f";
     else
-        std::cout 
-        << "\nfloat: impossible";
-        
+        std::cout
+            << "\nfloat: impossible";
+
     std::cout << "\ndouble: " << _double << std::endl;
 }
 
@@ -158,15 +158,15 @@ void ScalarConverter::printSpecial()
         << "char: impossible\n"
         << "int: impossible\n";
     if (_typeOfStr == INF_POS)
-        std::cout << "float: " << "+inff"<< "\n"
+        std::cout << "float: " << "+inff" << "\n"
                   << "double: " << "+inf"
                   << std::endl;
     else if (_typeOfStr == INF_NEG)
-        std::cout << "float: " << "-inff"<< "\n"
+        std::cout << "float: " << "-inff" << "\n"
                   << "double: " << "-inf"
                   << std::endl;
     else if (_typeOfStr == NANF)
-        std::cout << "float: " << "nanf"<< "\n"
+        std::cout << "float: " << "nanf" << "\n"
                   << "double: " << "nan"
                   << std::endl;
 }
