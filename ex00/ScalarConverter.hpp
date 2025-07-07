@@ -33,8 +33,8 @@ private:
     static int _int;
     static float _float;
     static double _double;
-    static type getType(std::string const &str);
 
+    static type getType(std::string const &str);
     static void printFromDouble();
     static void printChar(int c);
     static void printSpecial();
