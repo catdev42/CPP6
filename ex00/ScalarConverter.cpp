@@ -1,5 +1,7 @@
 #include "ScalarConverter.hpp"
 #include <iostream>
+#include <climits>
+#include <cfloat>
 
 ScalarConverter::type ScalarConverter::_typeOfStr;
 char ScalarConverter::_char;
@@ -154,13 +156,13 @@ void ScalarConverter::fromDouble()
     else
         std::cout << "char: impossible";
 
-    if (_double < std::numeric_limits<int>::max() && _double > std::numeric_limits<int>::min())
+    if (_double <= INT_MAX && _double >= INT_MIN)
         std::cout << "\nint: " << static_cast<int>(_double);
     else
         std::cout << "\nint: impossible";
 
-    if (_double < std::numeric_limits<float>::max() && _double > std::numeric_limits<float>::min())
-        std::cout << static_cast<float>(_double) << "f";
+    if (_double <= FLT_MAX && _double >= -FLT_MAX)
+        std::cout << "\nfloat: " << static_cast<float>(_double) << "f";
     else
         std::cout << "\nfloat: impossible";
 
