@@ -26,14 +26,13 @@ cat > ${CLASS_NAME}.hpp << EOL
 #define RESET "\033[0m"
 #endif
 
-class ${CLASS_NAME} {
-private:
-    
+class ${CLASS_NAME} {  
 public:
     ${CLASS_NAME}();
-    ${CLASS_NAME}(${CLASS_NAME} const &src);
-    ${CLASS_NAME} &operator=(${CLASS_NAME} const &rhs);
+    ${CLASS_NAME}(${CLASS_NAME} const &other);
+    ${CLASS_NAME} &operator=(${CLASS_NAME} const &other);
     ~${CLASS_NAME}();
+private:
 };
 
 std::ostream &operator<<(std::ostream &o, ${CLASS_NAME} const &infile);
@@ -60,14 +59,14 @@ ${CLASS_NAME}::${CLASS_NAME}()
     return;
 }
 
-${CLASS_NAME}::${CLASS_NAME}(${CLASS_NAME} const &src)
+${CLASS_NAME}::${CLASS_NAME}(${CLASS_NAME} const &other)
 {
     std::cout << GREY << "${CLASS_NAME} copy constructor" << RESET << std::endl;
     /*TODO*/;
     return;
 }
 
-${CLASS_NAME} &${CLASS_NAME}::operator=(${CLASS_NAME} const &rhs)
+${CLASS_NAME} &${CLASS_NAME}::operator=(${CLASS_NAME} const &other)
 {
     std::cout << GREY << "${CLASS_NAME} copy assignment operator" << RESET << std::endl;
     if (this != &rhs)
