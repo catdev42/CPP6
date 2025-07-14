@@ -1,0 +1,16 @@
+Hi. So here i have an exerise where i have to convert different types of numbers... 
+I get a string 
+
+As this class doesn’t need to store anything at all, it must not be instantiable by users.
+Except for char parameters, only the decimal notation will be used.
+    - All constructors are private so cannot be instantiated
+Is this enough?
+
+Chars:
+'c', 'a' ...
+If not displayable"
+To make things simple, please note that non-displayable characters shouldn’t be used as
+inputs. If a conversion to char is not displayable, print an informative message.
+
+
+Logic o the "convert"

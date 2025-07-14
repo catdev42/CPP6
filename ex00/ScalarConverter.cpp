@@ -45,7 +45,10 @@ void ScalarConverter::convert(std::string const &str)
     switch (_typeOfStr)
     {
     case CHAR:
-        _char = str[0];
+        if (str[0] == '\'')
+            _char = str[1];
+        else
+            _char = str[0];
         _double = static_cast<double>(_char);
         printFromDouble();
         break;
@@ -104,7 +107,7 @@ void ScalarConverter::printChar(int c)
     if (std::isprint(c))
     {
         _char = static_cast<char>(c);
-        std::cout << _char;
+        std::cout << "'" << _char << "'";
     }
     else
     {
@@ -128,7 +131,7 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
         return INF_POS;
     if (str.compare("-inff") == 0 || str.compare("-inf") == 0)
         return INF_NEG;
-    if (str.compare("nan") == 0 || str.compare("nanf") == 0)
+    if (str.compare("nan") == 0 || str.compare("nanf") == 0 || str.empty())
         return NANF;
 
     while (str[i])
@@ -137,8 +140,16 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
             nums = 1;
         else if (str[i] == '.')
             dot = 1;
+        else if (str[0] == '\'')
+        {
+            if (str[2] == '\'' && str.length() == 3)
+                return CHAR;
+            else
+                throw InputException();
+        }
         else
             chars = 1;
+
         i++;
     }
 

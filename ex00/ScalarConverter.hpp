@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cctype>
+#include <exception>
 
 #ifndef COLOR
 #define COLOR
@@ -26,6 +27,15 @@ private:
         INF_NEG = 4,
         INF_POS = 5,
         NANF = 6
+    };
+
+    class InputException : public std::exception
+    {
+    public:
+        virtual const char *what() const throw()
+        {
+            return "Invalid Input.";
+        }
     };
 
     static type _typeOfStr;
