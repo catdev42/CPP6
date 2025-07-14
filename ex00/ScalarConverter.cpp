@@ -122,9 +122,8 @@ void ScalarConverter::printChar(int c)
 
 ScalarConverter::type ScalarConverter::getType(std::string const &str)
 {
-    int i = 0;
+    size_t i = 0;
     bool dot = 0;
-    bool chars = 0;
     bool nums = 0;
 
     if (str.compare("+inff") == 0 || str.compare("+inf") == 0)
@@ -148,8 +147,14 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
                 throw InputException();
         }
         else
-            chars = 1;
-
+        {
+            if (str.length() == 1)
+                return CHAR;
+            if (str[i] == 'f' && i != str.length() - 1)
+                throw InputException();
+            if (str[i] != 'f' && str.length() != 1)
+                throw InputException();
+        }
         i++;
     }
 
@@ -157,8 +162,6 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
         return FLOAT;
     else if (dot && str[str.length() - 1] != 'f')
         return DOUBLE;
-    else if (chars && !nums)
-        return CHAR;
     else
         return INT;
 }
