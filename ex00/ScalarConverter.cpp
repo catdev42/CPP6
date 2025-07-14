@@ -125,6 +125,7 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
     size_t i = 0;
     bool dot = 0;
     bool nums = 0;
+    size_t len = str.length();
 
     if (str.compare("+inff") == 0 || str.compare("+inf") == 0)
         return INF_POS;
@@ -133,34 +134,39 @@ ScalarConverter::type ScalarConverter::getType(std::string const &str)
     if (str.compare("nan") == 0 || str.compare("nanf") == 0 || str.empty())
         return NANF;
 
+    if ((str[i] == '-' || str[i] == '+') && len != 1)
+        i++;
+
     while (str[i])
     {
         if (str[i] >= '0' && str[i] <= '9')
             nums = 1;
         else if (str[i] == '.')
             dot = 1;
-        else if (str[0] == '\'')
-        {
-            if (str[2] == '\'' && str.length() == 3)
-                return CHAR;
-            else
-                throw InputException();
-        }
         else
         {
-            if (str.length() == 1)
+            if (len == 1)
                 return CHAR;
-            if (str[i] == 'f' && i != str.length() - 1)
+            if (str[0] == '\'')
+            {
+                if ((str[2] == '\'' && len == 3) || len == 1)
+                    return CHAR;
+                else
+                    throw InputException();
+            }
+            if (str[i] == 'f' && i != len - 1)
                 throw InputException();
-            if (str[i] != 'f' && str.length() != 1)
+            if (str[i] != 'f' && len != 1)
                 throw InputException();
         }
         i++;
     }
 
-    if (dot && str[str.length() - 1] == 'f')
+    if (dot && len == 1)
+        return CHAR;
+    else if (dot && str[len - 1] == 'f')
         return FLOAT;
-    else if (dot && str[str.length() - 1] != 'f')
+    else if (dot && str[len - 1] != 'f')
         return DOUBLE;
     else
         return INT;
